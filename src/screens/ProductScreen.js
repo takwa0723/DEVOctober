@@ -1,82 +1,36 @@
-import React from 'react';
-import { 
-  View, 
-  
-  Image, 
-  FlatList, 
-  StyleSheet,
-  
-} from 'react-native';
-import products from '../data/products';
+import { StyleSheet, View, Image, FlatList, Pressable } from 'react-native';
+import { useSelector,useDispatch } from 'react-redux';
+import { productsSlice } from '../store/productsSlice';
 
-const ProductScreen = () => {
-  // Fonction pour rendre chaque élément de la liste
-  const renderProductItem = ({ item }) => (
-    <View style={styles.itemContainer}>
-      <Image
-        source={{ uri: item.image }}
-        style={styles.image}
-      />
-      <View style={styles.infoContainer}>
+const ProductsScreen = ({ navigation }) => {
+    const dispatch=useDispatch();
+    const products =useSelector(state=>state.products.products)
+    return(
+        <FlatList data={products} renderItem={({ item }) => (
+            <Pressable onPress={()=>{
+                //update product selected
+                dispatch(productsSlice.actions.setSelectedProduct(item.id))
 
+                navigation.navigate('Product Detail')}} style={styles.itemContainer}>
+                <Image source={{ uri: item.image }} style={styles.image} />
+            </Pressable>
+        )}
 
-  
-        
-      </View>
-    </View>
-  );
-
-  return (
-    <View style={styles.container}>
-      
-        <FlatList
-            data={products}
-            renderItem={renderProductItem}
-            keyExtractor={(item) => item.id}
-            
-            numColumns={2}
-            columnWrapperStyle={styles.row} 
+        numColumns={2} // Déﬁnit toujours 2 colonnes
+        key={2} // Utilisez une clé statique pour éviter les changements dynamiques
+        keyExtractor={(item) => item.id} // Assurez-vous que chaque élément a un id unique
         />
-    </View>
-  );
+    );
 };
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#f5f5f5',
+  itemContainer: {
+    width: "50%",
+    padding: 1,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 16,
-    color: '#333',
-  },
-    itemContainer: {
-    
-    borderRadius: 12,
-    margin: 8,
-    flex: 1, 
-    maxWidth: '48%', 
-    
-    },
-    row: {
-        justifyContent: 'space-between',
-    },
-    image: {
+  image: {
     width: '100%',
     aspectRatio: 1,
-    resizeMode: 'cover',
   },
-  infoContainer: {
-    padding: 16,
-  },
- 
-
-  
- 
 });
 
-export default ProductScreen;
+export default ProductsScreen;

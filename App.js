@@ -1,33 +1,25 @@
-import React from 'react';
-import { 
-  View, 
-  StyleSheet, 
-  StatusBar,
-  SafeAreaView 
-} from 'react-native';
-import ProductScreen from './src/screens/ProductScreen';
-import ProductDetailsScreen from './src/screens/ProductDetailScreen';
-import ShoppingCart from './src/screens/ShoppingCart';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, View } from 'react-native';
+import Navigation from './src/navigation'; // Navigation de l'application
+import { Provider } from 'react-redux'; // Fournisseur Redux
+import store from './src/store'; // Importation du store Redux
 
-const App = () => {
-  return (
-   
-      <View style={styles.container}>
-        <ShoppingCart/>
-        
-      </View>
-   
-  );
-};
+export default function App() {
+return (
+<Provider store={store}>
+<View style={styles.container}>
+<Navigation />
+<StatusBar style='auto' />
+</View>
+</Provider>
+);
+
+}
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  container: {
-    flex: 1,
-  },
+container: {
+flex: 1,
+backgroundColor: '#fff',
+justifyContent: 'center',
+},
 });
-
-export default App;
